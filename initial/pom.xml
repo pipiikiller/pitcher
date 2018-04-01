@@ -36,6 +36,12 @@
             <artifactId>tomcat-jdbc</artifactId>
             <version>7.0.72</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+
     </dependencies>
 
     <properties>
@@ -48,6 +54,11 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--<configuration>-->
+                    <!--<jvmArguments>-->
+                        <!-- -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8888-->
+                    <!--</jvmArguments>-->
+                <!--</configuration>-->
             </plugin>
         </plugins>
     </build>
