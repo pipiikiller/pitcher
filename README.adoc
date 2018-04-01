@@ -47,10 +47,10 @@ NOTE: Spring Boot doesn't generate code or make edits to your files. Instead, wh
 == Create a simple web application
 Now you can create a web controller for a simple web application.
 
-`src/main/java/hello/HelloController.java`
+`src/main/java/com/pitcher/backend/Main.java`
 [source,java]
 ----
-include::initial/src/main/java/hello/HelloController.java[]
+include::initial/src/main/java/com/pitcher/backend/Main.java[]
 ----
 
 The class is flagged as a `@RestController`, meaning it's ready for use by Spring MVC to handle web requests. `@RequestMapping` maps `/` to the `index()` method. When invoked from a browser or using curl on the command line, the method returns pure text. That's because `@RestController` combines `@Controller` and `@ResponseBody`, two annotations that results in web requests returning data rather than a view.
@@ -61,7 +61,7 @@ Here you create an `Application` class with the components:
 `src/main/java/hello/Application.java`
 [source,java]
 ----
-include::complete/src/main/java/hello/Application.java[]
+include::complete/src/main/java/com/pitcher/backend/Main.java[]
 ----
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application.adoc[]
@@ -82,46 +82,11 @@ If you are using Maven, execute:
 ----
 mvn package && java -jar target/{project_id}-0.1.0.jar
 ----
+you run the project project locally:
 
-You should see some output like this:
-
-....
-Let's inspect the beans provided by Spring Boot:
-application
-beanNameHandlerMapping
-defaultServletHandlerMapping
-dispatcherServlet
-embeddedServletContainerCustomizerBeanPostProcessor
-handlerExceptionResolver
-helloController
-httpRequestHandlerAdapter
-messageSource
-mvcContentNegotiationManager
-mvcConversionService
-mvcValidator
-org.springframework.boot.autoconfigure.MessageSourceAutoConfiguration
-org.springframework.boot.autoconfigure.PropertyPlaceholderAutoConfiguration
-org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration
-org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration$DispatcherServletConfiguration
-org.springframework.boot.autoconfigure.web.EmbeddedServletContainerAutoConfiguration$EmbeddedTomcat
-org.springframework.boot.autoconfigure.web.ServerPropertiesAutoConfiguration
-org.springframework.boot.context.embedded.properties.ServerProperties
-org.springframework.context.annotation.ConfigurationClassPostProcessor.enhancedConfigurationProcessor
-org.springframework.context.annotation.ConfigurationClassPostProcessor.importAwareProcessor
-org.springframework.context.annotation.internalAutowiredAnnotationProcessor
-org.springframework.context.annotation.internalCommonAnnotationProcessor
-org.springframework.context.annotation.internalConfigurationAnnotationProcessor
-org.springframework.context.annotation.internalRequiredAnnotationProcessor
-org.springframework.web.servlet.config.annotation.DelegatingWebMvcConfiguration
-propertySourcesBinder
-propertySourcesPlaceholderConfigurer
-requestMappingHandlerAdapter
-requestMappingHandlerMapping
-resourceHandlerMapping
-simpleControllerHandlerAdapter
-tomcatEmbeddedServletContainerFactory
-viewControllerHandlerMapping
-....
+Endpoints:
+http://localhost:8080/pitches/
+http://localhost:8080/pitches/pitch?name=Pitch88
 
 You can clearly see **org.springframework.boot.autoconfigure** beans. There is also a `tomcatEmbeddedServletContainerFactory`.
 
@@ -149,78 +114,6 @@ If you are using Maven, add this to your list of dependencies:
 ----
 include::complete/pom.xml[tag=tests]
 ----
-
-Now write a simple unit test that mocks the servlet request and response through your endpoint:
-
-`src/test/java/hello/HelloControllerTest.java`
-[source,java]
-----
-include::complete/src/test/java/hello/HelloControllerTest.java[]
-----
-
-The `MockMvc` comes from Spring Test and allows you, via a set of convenient builder classes, to send HTTP requests into the `DispatcherServlet` and make assertions about the result. Note the use of the `@AutoConfigureMockMvc` together with `@SpringBootTest` to inject a `MockMvc` instance. Having used `@SpringBootTest` we are asking for the whole application context to be created.  An alternative would be to ask Spring Boot to create only the web layers of the context using the `@WebMvcTest`. Spring Boot automatically tries to locate the main application class of your application in either case, but you can override it, or narrow it down, if you want to build something different.
-
-As well as mocking the HTTP request cycle we can also use Spring Boot to write a very simple full-stack integration test. For example, instead of (or as well as) the mock test above we could do this:
-
-`src/test/java/hello/HelloControllerIT.java`
-[source,java]
-----
-include::complete/src/test/java/hello/HelloControllerIT.java[]
-----
-
-The embedded server is started up on a random port by virtue of the `webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT` and the actual port is discovered at runtime with the `@LocalServerPort`.
-
-== Add production-grade services
-If you are building a web site for your business, you probably need to add some management services. Spring Boot provides several out of the box with its http://docs.spring.io/spring-boot/docs/{spring_boot_version}/reference/htmlsingle/#production-ready[actuator module], such as health, audits, beans, and more.
-
-Add this to your build file's list of dependencies:
-
-[source,groovy]
-----
-include::complete/build.gradle[tag=actuator]
-----
-
-If you are using Maven, add this to your list of dependencies:
-
-[source,xml]
-----
-include::complete/pom.xml[tag=actuator]
-----
-
-Then restart the app:
-
-[subs="attributes"]
-----
-./gradlew build && java -jar build/libs/{project_id}-0.1.0.jar
-----
-
-If you are using Maven, execute:
-
-[subs="attributes"]
-----
-mvn package && java -jar target/{project_id}-0.1.0.jar
-----
-
-You will see a new set of RESTful end points added to the application. These are management services provided by Spring Boot.
-
-....
-2014-06-03 13:23:28.119  ... : Mapped "{[/error],methods=[],params=[],headers=[],consumes...
-2014-06-03 13:23:28.119  ... : Mapped "{[/error],methods=[],params=[],headers=[],consumes...
-2014-06-03 13:23:28.136  ... : Mapped URL path [/**] onto handler of type [class org.spri...
-2014-06-03 13:23:28.136  ... : Mapped URL path [/webjars/**] onto handler of type [class ...
-2014-06-03 13:23:28.440  ... : Mapped "{[/info],methods=[GET],params=[],headers=[],consum...
-2014-06-03 13:23:28.441  ... : Mapped "{[/autoconfig],methods=[GET],params=[],headers=[],...
-2014-06-03 13:23:28.441  ... : Mapped "{[/mappings],methods=[GET],params=[],headers=[],co...
-2014-06-03 13:23:28.442  ... : Mapped "{[/trace],methods=[GET],params=[],headers=[],consu...
-2014-06-03 13:23:28.442  ... : Mapped "{[/env/{name:.*}],methods=[GET],params=[],headers=...
-2014-06-03 13:23:28.442  ... : Mapped "{[/env],methods=[GET],params=[],headers=[],consume...
-2014-06-03 13:23:28.443  ... : Mapped "{[/configprops],methods=[GET],params=[],headers=[]...
-2014-06-03 13:23:28.443  ... : Mapped "{[/metrics/{name:.*}],methods=[GET],params=[],head...
-2014-06-03 13:23:28.443  ... : Mapped "{[/metrics],methods=[GET],params=[],headers=[],con...
-2014-06-03 13:23:28.444  ... : Mapped "{[/health],methods=[GET],params=[],headers=[],cons...
-2014-06-03 13:23:28.444  ... : Mapped "{[/dump],methods=[GET],params=[],headers=[],consum...
-2014-06-03 13:23:28.445  ... : Mapped "{[/beans],methods=[GET],params=[],headers=[],consu...
-....
 
 They include: errors, http://localhost:8080/env[environment], http://localhost:8080/health[health], http://localhost:8080/beans[beans], http://localhost:8080/info[info], http://localhost:8080/metrics[metrics], http://localhost:8080/trace[trace], http://localhost:8080/configprops[configprops], and http://localhost:8080/dump[dump].
 
