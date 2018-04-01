@@ -66,21 +66,17 @@ public abstract class BasicDaoImp<T> implements BasicDao<T> {
     }
 
     @Override
-    public T find(T t, String property) {
+    public T find(String property, String propertyValue) {
         Queries queries = QueriesFactory.getQueryClass(
                 type.getTypeName().
                         substring(type.getTypeName().lastIndexOf(".")+1)
         );
-        Field field = null;
-        try {
-            field = t.getClass().getDeclaredField(property);
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
-        Map namedParameter = new HashMap();
 
-        T data = jdbc.queryForObject(queries.getByProperty("name",field.getName())
-                , (SqlParameterSource) namedParameter,new BeanPropertyRowMapper<>(type));
+        Map namedParameters = new HashMap();
+        namedParameters.put(property, propertyValue);
+
+        T data = jdbc.queryForObject(queries.getByProperty(property,propertyValue)
+                , (Map<String, ?>) namedParameters,new BeanPropertyRowMapper<>(type));
 
         return data;
     }

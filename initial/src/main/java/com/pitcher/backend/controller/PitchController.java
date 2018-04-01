@@ -3,9 +3,7 @@ package com.pitcher.backend.controller;
 import com.pitcher.backend.handler.PitchHandler;
 import com.pitcher.backend.model.Pitch;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -24,8 +22,9 @@ public class PitchController {
         return pitchHandler.getAllPitches();
     }
 
-    @RequestMapping("/pitches/pitch")
-    public Pitch getPitchesByName(@RequestParam String name){
+    @RequestMapping(value = "/pitches/pitch" , method = RequestMethod.GET)
+    @ResponseBody
+    public Pitch getPitchesByName(@RequestParam("name") String name){
 
         return pitchHandler.getPitch(name);
     }

@@ -11,7 +11,7 @@ public interface BasicDao <T>{
 
     T create(T t);
 
-    T find(T t, String property);
+    T find(String property, String propertyValue);
 
     T update(T T);
 

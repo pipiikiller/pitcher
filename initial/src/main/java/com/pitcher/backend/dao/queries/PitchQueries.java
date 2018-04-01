@@ -38,7 +38,10 @@ public class PitchQueries implements Queries {
 
     @Override
     public String getByProperty(String propertyKey, String propertyValue) {
-        return null;
+        String query = ""+
+                "SELECT * FROM " + REGISTRY.database+"pitch"+
+                " WHERE "+propertyKey+"= :"+propertyKey;
+        return query;
     }
 
     @Override

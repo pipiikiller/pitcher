@@ -24,8 +24,7 @@ public class PitchHandler {
     }
 
     public Pitch getPitch(String name) {
-        Pitch pitchToFind = new Pitch();
-        pitchToFind.setName(name);
-        return pitchDao.find(pitchToFind, "name");
+
+        return pitchDao.find("name", name);
     }
 }
