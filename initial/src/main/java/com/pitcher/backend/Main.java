@@ -1,4 +1,4 @@
-package pitcher;
+package com.pitcher.backend;
 
 import java.util.Arrays;
 
@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 
 @SpringBootApplication
-public class Application {
+public class Main {
     
     public static void main(String[] args) {
-        ApplicationContext ctx = SpringApplication.run(Application.class, args);
+        ApplicationContext ctx = SpringApplication.run(Main.class, args);
         
         System.out.println("Let's inspect the beans provided by Spring Boot:");
         
